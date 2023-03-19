@@ -5,8 +5,13 @@ export default async function singup(req, res) {
 
     if (req.method === "POST") {
       const user = req.body;
+      const {name,email,phone,password,dob,city}=user;
       try{
+        if(!name||!email||!phone||!password||!dob||!city){
+          return res.status(400).json({message:"Enter correct data"});
+        }
         const users = await readUserData();
+        if(users[email]!=undefined) return res.status(401).json({message:"User Already Exists"});
         users[user.email]=user;
         await writeUserData(users);
         res.status(201).json({ message: "User created successfully!" });

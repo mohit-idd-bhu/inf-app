@@ -1,4 +1,6 @@
 const jwt=require('jsonwebtoken');
+require('dotenv').config();
+const secret_key=process.env.SECRET_KEY;
 const readUserData=require('../../helpers/userData');
 
 export default async function verify(req,res){
@@ -8,7 +10,7 @@ export default async function verify(req,res){
             return res.status(403).send("A token is required for authentication");
         }
         try{
-            const decoded = jwt.verify(token,'secret-key');
+            const decoded = jwt.verify(token,secret_key);
             const email=decoded.email;
             const users=await readUserData();
             const user=users[email];

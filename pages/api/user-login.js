@@ -1,5 +1,7 @@
 const readUserData=require('../../helpers/userData');
 const jwt=require('jsonwebtoken');
+require('dotenv').config();
+const secret_key=process.env.SECRET_KEY;
 
 export default async function sigin(req, res) {
     if(req.method==='POST'){
@@ -11,7 +13,7 @@ export default async function sigin(req, res) {
       }
       const isMatch= (password===user.password);
       if(!isMatch) res.status(401).json({ message: 'Invalid email or password' });
-      const token=jwt.sign({email},'secret-key',{expiresIn:'1h'});
+      const token=jwt.sign({email},secret_key);
       res.status(200).json({token});
     }
     else{
